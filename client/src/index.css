@@ -159,8 +159,8 @@ ul {
   display: inline-block;
 }
 .btn:hover {
-  background: var(--primary-700);
-  box-shadow: var(--shadow-3);
+  background-color: #5CC1FF;
+  color: #38015c;
 }
 .btn-hipster {
   color: var(--primary-500);

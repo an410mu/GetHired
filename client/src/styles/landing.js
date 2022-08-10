@@ -8,11 +8,25 @@ const Wrapper = styled.main`
     height: var(--nav-height);
     display: flex;
     align-items: center;
+    justify-content: space-between;
     img {
       height:80px;
       weight:80px;
       border-radius:15%;
     }
+    ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      align-items: baseline;
+      gap: 30px
+    }
+    button:hover {
+      background-color: #5CC1FF;
+      color: #38015c;
+    }
+
   }
   .page {
     min-height: calc(100vh - var(--nav-height));
