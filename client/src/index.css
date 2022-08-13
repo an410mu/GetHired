@@ -157,6 +157,7 @@ ul {
   transition: var(--transition);
   text-transform: capitalize;
   display: inline-block;
+  text-align: center;
 }
 .btn:hover {
   background-color: #5CC1FF;
