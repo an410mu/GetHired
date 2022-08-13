@@ -53,8 +53,9 @@ const Auth = () => {
       {showAlert && <div className={`alert alert-${alertType}`}>{alertText} </div>}
 
       <div className='form-row'>
-        <label htmlFor='name' className='form-label'>Name</label>
-        <input type='text' value={values.name} name='name' onChange={changeHandler} className='form-input'/>
+
+        {!values.isMember && <><label htmlFor='name' className='form-label'>Name</label>
+        <input type='text' value={values.name} name='name' onChange={changeHandler} className='form-input'/></>}
         <label htmlFor='email' className='form-label'>Email</label>
         <input type='email' value={values.email} name='email' onChange={changeHandler} className='form-input'/>
         {values.isMember && <><label htmlFor='password' className='form-label'>Password</label>

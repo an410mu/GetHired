@@ -4,7 +4,7 @@ import Overview from './components/Overview.js';
 import Register from './components/Register.js';
 import Auth from './components/Auth.js';
 import React from 'react'
-//import styled from 'styled-components';
+import styled from 'styled-components';
 
 
 
