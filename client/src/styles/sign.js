@@ -7,13 +7,13 @@ const Wrapper = styled.section`
     display: block;
     margin: 0 auto;
     margin-bottom: 1.38rem;
-      height:100px;
-      weight:100px;
+      height:150px;
+      weight:150px;
       border-radius:15%;
 
   }
   .form {
-    max-width: 400px;
+    max-width: 700px;
     border-top: 5px solid #5CC1FF;
   }
   h3 {

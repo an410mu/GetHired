@@ -9,7 +9,9 @@ module.exports = {
   output: {
     filename: 'bundle.js',
     path: DIST_DIR,
+    sourceMapFilename: "bundle.js.map"
   },
+  devtool: "source-map",
   module: {
     rules: [
       {
@@ -51,5 +53,8 @@ module.exports = {
   plugins: [
     new Dotenv(),
   ],
+  devServer:{
+    historyApiFallback:true
+  },
   mode: 'development',
 };

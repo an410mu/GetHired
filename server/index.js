@@ -15,6 +15,6 @@ app.use('/api/auth', auth);
 
 
 
-app.listen(3001, () => {
-  console.log('Server is running at port 3001');
+app.listen(4000, () => {
+  console.log('Server is running at port 4000');
 });

@@ -1,11 +1,22 @@
-import React from 'react';
+import React, {useState} from 'react';
 import demo from '../assets/demo.png';
 
+
+
+
+
+
+
 const Overview = () => {
+
+  const [add, setAdd] = useState(false);
+
+
+
   return (
     <div>
-      <div>This is main page</div>
-      <img src={demo} alt='demo'  />
+      <img src={demo} alt='demo' className='demo' />
+
     </div>
   )
 }
