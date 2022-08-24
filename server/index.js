@@ -19,7 +19,7 @@ app.use('/api/jobs', jobs);
 const start = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URL,
-      { useNewUrlParser: true, useUnifiedTopology: true }
+      { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true }
       )
     app.listen(4000, () => {
       console.log('Server is running at port 4000');
