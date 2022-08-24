@@ -11,12 +11,16 @@ register: async (req, res) => {
   // VALUES ( $1, $2, $3)`;
   // pool.query(qStr, userInput);
   // console.log("this is the body", req.body)
-  try {
-    const user = await User.create(req.body);
-    res.status(201).json({user})
-  } catch (error) {
-    res.status(500).json({msg: 'there is an error', err:error})
+
+  const {name, email, password} = req.body;
+  if (!name || !email || !password) {
+    res.json('please enter all values')
   }
+
+  const user = await User.create({name, email, password});
+  const token = user.createJWT()
+  res.status(201).json({user, token})
+
 
 },
 
