@@ -3357,6 +3357,13 @@ const Auth = () => {
     });
   };
 
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    if (user) {
+      setTimeout(() => {
+        navigate('/overview');
+      }, 2000);
+    }
+  });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_styles_auth_js__WEBPACK_IMPORTED_MODULE_3__["default"], {
     className: "full-page"
   }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement("form", {

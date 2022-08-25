@@ -1,5 +1,5 @@
 import React from 'react';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Link} from 'react-router-dom';
 import {useAppContext} from '../context/appContext';
 import logo from '../assets/logo.png';
@@ -14,6 +14,7 @@ const initialState = {
 }
 
 const Auth = () => {
+
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
 
@@ -52,6 +53,14 @@ const Auth = () => {
   const toggleMember = () => {
     setValues( {...values, isMember: !values.isMember});
   }
+
+  useEffect( () => {
+    if (user) {
+      setTimeout( () => {
+        navigate('/overview')
+      }, 2000)
+    }
+  })
 
   return (
     <Wrapper className='full-page'>
