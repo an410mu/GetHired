@@ -23,7 +23,8 @@ let userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: [true, 'Please enter password'],
-    minlength: 6
+    minlength: 6,
+    select: false
   },
 })
 
@@ -35,7 +36,7 @@ userSchema.pre('save', async function() {
 })
 
 userSchema.methods.createJWT = function () {
-  return jwt.sign({userID:this._id}, 'jwtSecret', {expiresIn:'1d'})
+  return jwt.sign({userID:this._id}, process.env.JWT_SECRET, {expiresIn:process.env.JWT_LIFETIME})
 }
 
 let User = mongoose.model('User', userSchema)

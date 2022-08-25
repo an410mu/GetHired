@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import {useAppContext} from '../context/appContext';
 import logo from '../assets/logo.png';
 import Wrapper from '../styles/auth.js';
+import {useNavigate} from 'react-router-dom';
 
 const initialState = {
   name: '',
@@ -13,11 +14,12 @@ const initialState = {
 }
 
 const Auth = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
 
   //const state = useAppContext();
   //console.log(state);
-  const { showAlert, alertText, alertType, displayAlert} = useAppContext();
+  const { user, isLoading,showAlert, alertText, alertType, displayAlert,registerUser} = useAppContext();
 
   const changeHandler = (e) => {
     //console.log(e.target.name,e.target.value);
@@ -30,9 +32,15 @@ const Auth = () => {
     const {name, email, password, isMember} = values;
     if (!email || !password || (!name && !isMember)) {
       displayAlert();
-      //return;
+      return;
     }
-    console.log("this is the current values", values);
+    const curUser = {name, email, password};
+    if (isMember) {
+      console.log('ALREADY A MEMEBER')
+    } else {
+      registerUser(curUser);
+    }
+    //console.log("this is the current values", values);
     setValues({
       ...values,
       name:'',
@@ -68,7 +76,7 @@ const Auth = () => {
 
       <p>
         {values.isMember ? 'Not a member yet?' : 'Already a member?'}
-        <button type='button' onClick={toggleMember} className='member-btn'>{values.isMember ? 'Sign Up' : 'Login'}</button>
+        <button type='button' onClick={toggleMember} className='member-btn' >{values.isMember ? 'Sign Up' : 'Login'}</button>
       </p>
       </form>
     </Wrapper>

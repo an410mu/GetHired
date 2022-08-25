@@ -17,9 +17,13 @@ register: async (req, res) => {
     res.json('please enter all values')
   }
 
+  //select in the schema not working with the create, the password still get pass back
   const user = await User.create({name, email, password});
   const token = user.createJWT()
-  res.status(201).json({user, token})
+  res.status(201).json({user:{
+    email:user.email,
+    name:user.name
+  }, token})
 
 
 },
