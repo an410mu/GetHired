@@ -1,14 +1,16 @@
 import React, {useReducer, useContext} from 'react';
 import axios from 'axios';
 
+const token = localStorage.getItem('token')
+const user = localStorage.getItem('user')
 
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
   alertType: '',
-  user:null,
-  token:null,
+  user:user ? JSON.parse(user) : null,
+  token:token,
 }
 
 
@@ -76,6 +78,17 @@ const AppProvider = ({children}) => {
     setTimeout( () => {dispatch({type:clear_alert})}, 2000);
   }
 
+  const addUserToLocalStorage = ({ user, token }) => {
+    localStorage.setItem('user', JSON.stringify(user))
+    localStorage.setItem('token', token)
+    console.log('add to local storage')
+  }
+
+  const removeUserFromLocalStorage = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('user')
+  }
+
   const registerUser = async (curUser) => {
     dispatch({type:register})
     try {
@@ -86,6 +99,8 @@ const AppProvider = ({children}) => {
         type:done,
         playload:{user, token}
       })
+      //add user to local storage, after refresh still maintain user data
+      addUserToLocalStorage({user, token})
     } catch (error) {
 
     }

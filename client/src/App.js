@@ -17,6 +17,7 @@ function App() {
       <Route path='/register' element={<Register />} />
       <Route path='/auth' element={<Auth/>} />
       <Route path='/overview' element={<Overview/>} />
+      <Route path='/test' element={<div>test</div>} />
       <Route path='*' element={<div>Error</div>} />
     </Routes>
     </BrowserRouter>

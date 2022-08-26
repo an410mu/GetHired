@@ -15,6 +15,9 @@ app.use('/', routes);
 app.use('/api/auth', auth);
 app.use('/api/jobs', jobs);
 
+// app.get('*', (req, res) => {
+//   res.sendFile(path.resolve(__dirname, '/client/dist/index.html'));
+// });
 
 const start = async () => {
   try {

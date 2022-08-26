@@ -3253,6 +3253,9 @@ function App() {
     path: "/overview",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement(_components_Overview_js__WEBPACK_IMPORTED_MODULE_1__["default"], null)
   }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
+    path: "/test",
+    element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", null, "test")
+  }), /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement(react_router_dom__WEBPACK_IMPORTED_MODULE_6__.Route, {
     path: "*",
     element: /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_4___default().createElement("div", null, "Error")
   })));
@@ -3699,13 +3702,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 
 
+const token = localStorage.getItem('token');
+const user = localStorage.getItem('user');
 const initialState = {
   isLoading: false,
   showAlert: false,
   alertText: '',
   alertType: '',
-  user: null,
-  token: null
+  user: user ? JSON.parse(user) : null,
+  token: token
 }; //actions
 
 const display_alert = 'SHOW_ALERT';
@@ -3777,6 +3782,21 @@ const AppProvider = _ref => {
     }, 2000);
   };
 
+  const addUserToLocalStorage = _ref2 => {
+    let {
+      user,
+      token
+    } = _ref2;
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('token', token);
+    console.log('add to local storage');
+  };
+
+  const removeUserFromLocalStorage = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+  };
+
   const registerUser = async curUser => {
     dispatch({
       type: register
@@ -3795,6 +3815,11 @@ const AppProvider = _ref => {
           user,
           token
         }
+      }); //add user to local storage, after refresh still maintain user data
+
+      addUserToLocalStorage({
+        user,
+        token
       });
     } catch (error) {}
   };
