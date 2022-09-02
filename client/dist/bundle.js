@@ -3361,6 +3361,8 @@ const Auth = () => {
   };
 
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
+    console.log('this is user', user);
+
     if (user) {
       setTimeout(() => {
         navigate('/overview');

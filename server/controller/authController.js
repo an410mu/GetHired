@@ -4,17 +4,15 @@ const User = require('../db/mongo');
 
 module.exports = {
 register: async (req, res) => {
-  //This is from postgressql
-  // const userInput = [req.body.name, req.body.email, req.body.password]
-  // console.log("this is data from postman", userInput);
-  // let qStr = `INSERT INTO users( name, email, password)
-  // VALUES ( $1, $2, $3)`;
-  // pool.query(qStr, userInput);
-  // console.log("this is the body", req.body)
 
   const {name, email, password} = req.body;
   if (!name || !email || !password) {
-    res.json('please enter all values')
+    throw Error('Please enter all fields');
+  }
+
+  const existedUser = await User.findOne({email})
+  if (existedUser) {
+    throw Error('email is already registed')
   }
 
   //select in the schema not working with the create, the password still get pass back
@@ -28,8 +26,27 @@ register: async (req, res) => {
 
 },
 
-login: (req, res) => {
-  res.send('login a user')
+//check password for registed user
+login: async (req, res) => {
+  const {email, password} = req.body;
+    if (!email || !password) {
+      throw Error('Please enter all values')
+    }
+
+    const user = await User.findOne({email}).select('+password')
+    console.log('this is user', user)
+    if (!user) {
+      throw Error('User does not exist')
+    }
+
+    const checkPwd = await user.comparePassword(password)
+    if (!checkPwd) {
+      throw Error ('Invalid password')
+    }
+
+    const token = user.createJWT()
+    user.password = undefined
+    res.status(200).json({ user, token})
 },
 
 update: (req, res) => {

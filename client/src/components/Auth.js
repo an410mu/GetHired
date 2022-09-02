@@ -55,6 +55,7 @@ const Auth = () => {
   }
 
   useEffect( () => {
+    console.log('this is user', user)
     if (user) {
       setTimeout( () => {
         navigate('/overview')
