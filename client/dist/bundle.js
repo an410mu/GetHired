@@ -3309,7 +3309,7 @@ const Auth = () => {
     alertText,
     alertType,
     displayAlert,
-    registerUser
+    setupUser
   } = (0,_context_appContext__WEBPACK_IMPORTED_MODULE_1__.useAppContext)();
 
   const changeHandler = e => {
@@ -3341,17 +3341,20 @@ const Auth = () => {
     };
 
     if (isMember) {
-      console.log('ALREADY A MEMEBER');
+      //console.log('ALREADY A MEMEBER')
+      setupUser({
+        curUser,
+        endPoint: 'login',
+        alertText: 'Login Successful'
+      });
     } else {
-      registerUser(curUser);
+      setupUser({
+        curUser,
+        endPoint: 'register',
+        alertText: 'User Created'
+      });
     } //console.log("this is the current values", values);
 
-
-    setValues({ ...values,
-      name: '',
-      email: '',
-      password: ''
-    });
   };
 
   const toggleMember = () => {
@@ -3366,7 +3369,7 @@ const Auth = () => {
     if (user) {
       setTimeout(() => {
         navigate('/overview');
-      }, 2000);
+      }, 1000);
     }
   });
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_styles_auth_js__WEBPACK_IMPORTED_MODULE_3__["default"], {
@@ -3718,7 +3721,10 @@ const initialState = {
 const display_alert = 'SHOW_ALERT';
 const clear_alert = 'CLEAR_ALERT';
 const register = 'REGISTER_BEGIN';
-const done = 'REGISTER_DONE'; //reduer hooks
+const done = 'REGISTER_DONE';
+const setup_begin = 'SETUP_USER_BEGIN';
+const setup_success = 'SETUP_USER_SUCCESS';
+const setup_error = 'SETUP_ERROR'; //reduer hooks
 
 const reducer = (state, action) => {
   if (action.type === display_alert) {
@@ -3753,6 +3759,33 @@ const reducer = (state, action) => {
       token: action.playload.token
     };
   }
+
+  if (action.type === setup_begin) {
+    return { ...state,
+      isLoading: true
+    };
+  }
+
+  if (action.type === setup_success) {
+    return { ...state,
+      isLoading: true,
+      token: action.playload.token,
+      user: action.playload.user,
+      showAlert: true,
+      alertType: 'success',
+      alertText: action.playload.alertText
+    };
+
+    if (action.type === setup_error) {
+      return { ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: 'danger',
+        alertText: action.playload.msg
+      };
+    }
+  } //add action above
+
 
   throw new Error("no such action ".concat(action.type));
 };
@@ -3797,25 +3830,47 @@ const AppProvider = _ref => {
   const removeUserFromLocalStorage = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-  };
+  }; // const registerUser = async (curUser) => {
+  //   dispatch({type:register})
+  //   try {
+  //     const response = await axios.post('/api/auth/register', curUser)
+  //     console.log(response)
+  //     const {user, token} = response.data;
+  //     dispatch({
+  //       type:done,
+  //       playload:{user, token}
+  //     })
+  //     //add user to local storage, after refresh still maintain user data
+  //     addUserToLocalStorage({user, token})
+  //   } catch (error) {
+  //   }
+  // }
 
-  const registerUser = async curUser => {
+
+  const setupUser = async _ref3 => {
+    let {
+      curUser,
+      endPoint,
+      alertText
+    } = _ref3;
     dispatch({
-      type: register
+      type: setup_begin
     });
 
     try {
-      const response = await axios__WEBPACK_IMPORTED_MODULE_1___default().post('/api/auth/register', curUser);
-      console.log(response);
+      const {
+        data
+      } = await axios__WEBPACK_IMPORTED_MODULE_1___default().post("/api/auth/".concat(endPoint), curUser);
       const {
         user,
         token
-      } = response.data;
+      } = data;
       dispatch({
-        type: done,
+        type: setup_success,
         playload: {
           user,
-          token
+          token,
+          alertText
         }
       }); //add user to local storage, after refresh still maintain user data
 
@@ -3823,13 +3878,22 @@ const AppProvider = _ref => {
         user,
         token
       });
-    } catch (error) {}
+    } catch (error) {
+      dispatch({
+        type: setup_error,
+        playload: {
+          msg: error.response.data.msg
+        }
+      });
+    }
+
+    clearAlert();
   };
 
   return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(AppContext.Provider, {
     value: { ...state,
       displayAlert,
-      registerUser
+      setupUser
     }
   }, children);
 };

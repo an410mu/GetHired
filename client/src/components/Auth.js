@@ -20,7 +20,7 @@ const Auth = () => {
 
   //const state = useAppContext();
   //console.log(state);
-  const { user, isLoading,showAlert, alertText, alertType, displayAlert,registerUser} = useAppContext();
+  const { user, isLoading,showAlert, alertText, alertType, displayAlert,setupUser} = useAppContext();
 
   const changeHandler = (e) => {
     //console.log(e.target.name,e.target.value);
@@ -37,17 +37,20 @@ const Auth = () => {
     }
     const curUser = {name, email, password};
     if (isMember) {
-      console.log('ALREADY A MEMEBER')
+      //console.log('ALREADY A MEMEBER')
+      setupUser({
+        curUser,
+        endPoint: 'login',
+        alertText: 'Login Successful'
+      })
     } else {
-      registerUser(curUser);
+      setupUser({
+        curUser,
+        endPoint: 'register',
+        alertText: 'User Created'
+      })
     }
     //console.log("this is the current values", values);
-    setValues({
-      ...values,
-      name:'',
-      email:'',
-      password:''
-    })
   }
 
   const toggleMember = () => {
@@ -59,7 +62,7 @@ const Auth = () => {
     if (user) {
       setTimeout( () => {
         navigate('/overview')
-      }, 2000)
+      }, 1000)
     }
   })
 

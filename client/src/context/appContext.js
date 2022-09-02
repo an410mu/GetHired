@@ -19,6 +19,9 @@ const display_alert = 'SHOW_ALERT';
 const clear_alert = 'CLEAR_ALERT';
 const register = 'REGISTER_BEGIN';
 const done = 'REGISTER_DONE';
+const setup_begin = 'SETUP_USER_BEGIN';
+const setup_success = 'SETUP_USER_SUCCESS';
+const setup_error = 'SETUP_ERROR';
 
 
 //reduer hooks
@@ -56,6 +59,35 @@ const reducer = (state, action) => {
       token:action.playload.token
     }
   }
+
+  if (action.type === setup_begin) {
+    return {...state, isLoading:true}
+  }
+
+  if (action.type === setup_success) {
+    return {
+      ...state,
+      isLoading:true,
+      token:action.playload.token,
+      user:action.playload.user,
+      showAlert:true,
+      alertType: 'success',
+      alertText:action.playload.alertText
+    }
+
+    if (action.type === setup_error) {
+      return {
+        ...state,
+        isLoading: false,
+        showAlert:true,
+        alertType: 'danger',
+        alertText: action.playload.msg
+      }
+    }
+  }
+
+
+  //add action above
   throw new Error(`no such action ${action.type}`)
 }
 
@@ -89,25 +121,43 @@ const AppProvider = ({children}) => {
     localStorage.removeItem('user')
   }
 
-  const registerUser = async (curUser) => {
-    dispatch({type:register})
-    try {
-      const response = await axios.post('/api/auth/register', curUser)
-      console.log(response)
-      const {user, token} = response.data;
-      dispatch({
-        type:done,
-        playload:{user, token}
-      })
-      //add user to local storage, after refresh still maintain user data
-      addUserToLocalStorage({user, token})
-    } catch (error) {
+  // const registerUser = async (curUser) => {
+  //   dispatch({type:register})
+  //   try {
+  //     const response = await axios.post('/api/auth/register', curUser)
+  //     console.log(response)
+  //     const {user, token} = response.data;
+  //     dispatch({
+  //       type:done,
+  //       playload:{user, token}
+  //     })
+  //     //add user to local storage, after refresh still maintain user data
+  //     addUserToLocalStorage({user, token})
+  //   } catch (error) {
 
-    }
+  //   }
+  // }
+
+const setupUser = async ({curUser, endPoint, alertText}) => {
+  dispatch({type: setup_begin})
+  try {
+    const { data } = await axios.post(`/api/auth/${endPoint}`, curUser);
+    const {user, token} = data;
+    dispatch({type:setup_success, playload:{user, token, alertText}})
+    //add user to local storage, after refresh still maintain user data
+    addUserToLocalStorage({user, token})
+  } catch (error) {
+    dispatch({type:setup_error, playload:{msg:error.response.data.msg}})
   }
 
+  clearAlert()
+}
+
+
+
+
   return (
-    <AppContext.Provider value={{...state, displayAlert, registerUser}}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{...state, displayAlert, setupUser}}>{children}</AppContext.Provider>
   )
 }
 
