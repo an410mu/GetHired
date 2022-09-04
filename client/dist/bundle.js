@@ -3775,15 +3775,15 @@ const reducer = (state, action) => {
       alertType: 'success',
       alertText: action.playload.alertText
     };
+  }
 
-    if (action.type === setup_error) {
-      return { ...state,
-        isLoading: false,
-        showAlert: true,
-        alertType: 'danger',
-        alertText: action.playload.msg
-      };
-    }
+  if (action.type === setup_error) {
+    return { ...state,
+      isLoading: false,
+      showAlert: true,
+      alertType: 'danger',
+      alertText: action.playload.msg
+    };
   } //add action above
 
 

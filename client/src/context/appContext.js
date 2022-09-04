@@ -48,6 +48,7 @@ const reducer = (state, action) => {
       isLoading: true
     }
   }
+
   if (action.type === done) {
     return {
       ...state,
@@ -74,6 +75,7 @@ const reducer = (state, action) => {
       alertType: 'success',
       alertText:action.playload.alertText
     }
+  }
 
     if (action.type === setup_error) {
       return {
@@ -84,7 +86,6 @@ const reducer = (state, action) => {
         alertText: action.playload.msg
       }
     }
-  }
 
 
   //add action above
