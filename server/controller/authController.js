@@ -36,12 +36,12 @@ login: async (req, res) => {
     const user = await User.findOne({email}).select('+password')
     console.log('this is user', user)
     if (!user) {
-      throw Error('User does not exist')
+      throw new Error('User does not exist')
     }
 
     const checkPwd = await user.comparePassword(password)
     if (!checkPwd) {
-      throw Error ('Invalid password')
+      throw new Error ('Invalid password')
     }
 
     const token = user.createJWT()
