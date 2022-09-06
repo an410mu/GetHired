@@ -1,6 +1,5 @@
 import {BrowserRouter, Routes, Route} from "react-router-dom";
 import Landing from './components/Landing.js';
-import Overview from './components/Overview.js';
 import Register from './components/Register.js';
 
 import React from 'react'

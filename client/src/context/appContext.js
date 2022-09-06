@@ -11,6 +11,7 @@ const initialState = {
   alertType: '',
   user:user ? JSON.parse(user) : null,
   token:token,
+  showSidebar: true,
 }
 
 
@@ -22,6 +23,8 @@ const done = 'REGISTER_DONE';
 const setup_begin = 'SETUP_USER_BEGIN';
 const setup_success = 'SETUP_USER_SUCCESS';
 const setup_error = 'SETUP_ERROR';
+const toggle_sidebar = 'TOGGLE_SIDEBAR';
+const logout = 'LOGOUT';
 
 
 //reduer hooks
@@ -87,6 +90,20 @@ const reducer = (state, action) => {
       }
     }
 
+    if (action.type === toggle_sidebar) {
+      return {
+        ...state,
+        showSidebar: !state.showSidebar,
+      }
+    }
+
+    if (action.type === logout) {
+      return {
+        ...initialState,
+        user: null,
+        token: null,
+      }
+    }
 
   //add action above
   throw new Error(`no such action ${action.type}`)
@@ -122,43 +139,33 @@ const AppProvider = ({children}) => {
     localStorage.removeItem('user')
   }
 
-  // const registerUser = async (curUser) => {
-  //   dispatch({type:register})
-  //   try {
-  //     const response = await axios.post('/api/auth/register', curUser)
-  //     console.log(response)
-  //     const {user, token} = response.data;
-  //     dispatch({
-  //       type:done,
-  //       playload:{user, token}
-  //     })
-  //     //add user to local storage, after refresh still maintain user data
-  //     addUserToLocalStorage({user, token})
-  //   } catch (error) {
+  const setupUser = async ({curUser, endPoint, alertText}) => {
+    dispatch({type: setup_begin})
+    try {
+      const { data } = await axios.post(`/api/auth/${endPoint}`, curUser);
+      const {user, token} = data;
+      dispatch({type:setup_success, playload:{user, token, alertText}})
+      //add user to local storage, after refresh still maintain user data
+      addUserToLocalStorage({user, token})
+    } catch (error) {
+      dispatch({type:setup_error, playload:{msg:error.response.data.msg}})
+    }
 
-  //   }
-  // }
-
-const setupUser = async ({curUser, endPoint, alertText}) => {
-  dispatch({type: setup_begin})
-  try {
-    const { data } = await axios.post(`/api/auth/${endPoint}`, curUser);
-    const {user, token} = data;
-    dispatch({type:setup_success, playload:{user, token, alertText}})
-    //add user to local storage, after refresh still maintain user data
-    addUserToLocalStorage({user, token})
-  } catch (error) {
-    dispatch({type:setup_error, playload:{msg:error.response.data.msg}})
+    clearAlert()
   }
 
-  clearAlert()
-}
+  const toggleSidebar = () => {
+    dispatch({type: toggle_sidebar})
+  }
 
-
+  const logoutUser = () => {
+    dispatch({ type: logout })
+    removeUserFromLocalStorage()
+  }
 
 
   return (
-    <AppContext.Provider value={{...state, displayAlert, setupUser}}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser}}>{children}</AppContext.Provider>
   )
 }
 

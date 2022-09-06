@@ -14,7 +14,7 @@ const BigSidebar = () => {
         }
       >
         <div className='content'>
-          <div>something from bigsidebard </div>
+         <div>This is the side bar</div>
         </div>
       </div>
     </Wrapper>
