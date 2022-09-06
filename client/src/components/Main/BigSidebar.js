@@ -1,11 +1,22 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import { useAppContext } from '../../context/appContext'
-//import NavLinks from './NavLinks'
 import logo from '../../assets/logo.png';
 import Wrapper from '../../styles/bigside.js'
+import { IoBarChartSharp } from 'react-icons/io5'
+import { MdQueryStats } from 'react-icons/md'
+import { FaWpforms } from 'react-icons/fa'
+import { ImProfile } from 'react-icons/im'
+
+const links = [
+  { id: 1, text: 'stats', path: '/overview', icon: <IoBarChartSharp /> },
+  { id: 2, text: 'all jobs', path: '/overview/all-jobs', icon: <MdQueryStats /> },
+  { id: 3, text: 'add job', path: '/overview/add-job', icon: <FaWpforms /> },
+  { id: 4, text: 'profile', path: 'profile', icon: <ImProfile /> },
+]
 
 const BigSidebar = () => {
-  const { showSidebar } = useAppContext()
+  const { showSidebar, toggleSidebar } = useAppContext()
   return (
     <Wrapper>
       <div
@@ -14,7 +25,14 @@ const BigSidebar = () => {
         }
       >
         <div className='content'>
-         <div>This is the side bar</div>
+         <div className='nav-links'>{links.map( (item) => {
+          const {id, text, path, icon} = item;
+          return (
+            <NavLink key={id} to={path} onClick={toggleSidebar}
+            className={({ isActive }) => isActive ? 'nav-link active' : 'nav-link'}>
+              <span className='icon'>{icon}</span>{text}</NavLink>
+          )
+         })}</div>
         </div>
       </div>
     </Wrapper>
