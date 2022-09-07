@@ -6,6 +6,7 @@ const routes = require('./routes/router');
 const auth = require('./routes/authRoutes');
 const jobs = require('./routes/jobRoutes');
 const errorHandler = require('./middleware/errorHandler');
+const authUser = require('./middleware/authUser');
 const mongoose = require('mongoose');
 
 const app = express();
@@ -16,7 +17,7 @@ app.use(express.json());
 //routers
 //app.use('/', routes);
 app.use('/api/auth', auth);
-app.use('/api/jobs', jobs);
+app.use('/api/jobs', authUser, jobs);
 
 
 

@@ -1,3 +1,4 @@
+const Jobs = require('../db/Jobs');
 
 module.exports = {
   create : async (req, res) => {
