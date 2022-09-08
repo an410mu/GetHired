@@ -36,6 +36,8 @@ const setup_success = 'SETUP_USER_SUCCESS';
 const setup_error = 'SETUP_ERROR';
 const toggle_sidebar = 'TOGGLE_SIDEBAR';
 const logout = 'LOGOUT';
+const handleInput = 'HANDLE_INPUT';
+const clear = 'CLEAR';
 
 
 //reduer hooks
@@ -116,6 +118,30 @@ const reducer = (state, action) => {
       }
     }
 
+    if (action.type === handleInput) {
+      return {
+        ...state,
+        [action.playload.name]: action.playload.value,
+      }
+    }
+    if (action.type === clear) {
+      const initialState = {
+        isEditing: false,
+        editJobId: '',
+        position: '',
+        company: '',
+        jobLocation: '',
+        jobType: 'full-time',
+        status: 'pending',
+      }
+
+      return {
+        ...state,
+        ...initialState,
+      }
+    }
+
+
   //add action above
   throw new Error(`no such action ${action.type}`)
 }
@@ -174,9 +200,15 @@ const AppProvider = ({children}) => {
     removeUserFromLocalStorage()
   }
 
+  const handleChange = ({ name, value }) => {
+    dispatch({ type: handleInput, playload: { name, value } })
+  }
+  const clearValues = () => {
+    dispatch({ type: clear })
+  }
 
   return (
-    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser}}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser, handleChange, clearValues}}>{children}</AppContext.Provider>
   )
 }
 
