@@ -58,7 +58,7 @@ const Auth = () => {
   }
 
   useEffect( () => {
-    console.log('this is user', user)
+    //console.log('this is user', user)
     if (user) {
       setTimeout( () => {
         navigate('/overview')
@@ -84,7 +84,6 @@ const Auth = () => {
       </div>
 
       <button type='submit' className='btn btn-block' >{values.isMember?'Sign In':'Sign Up'}</button>
-      {/* <Link to='/overview' className='btn btn-block'>{values.isMember?'Sign In':'Sign Up'}</Link> */}
       <Link to='/' className='btn btn-block'>Cancel</Link>
 
       <p>

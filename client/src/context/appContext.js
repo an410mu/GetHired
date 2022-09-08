@@ -12,6 +12,16 @@ const initialState = {
   user:user ? JSON.parse(user) : null,
   token:token,
   showSidebar: true,
+  //jobs states
+  isEditing: false,
+  editJobId: '',
+  position: '',
+  company: '',
+  jobLocation: '',
+  jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
+  jobType: 'full-time',
+  statusOptions: ['interview', 'declined', 'pending'],
+  status: 'pending',
 }
 
 

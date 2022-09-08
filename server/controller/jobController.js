@@ -2,7 +2,13 @@ const Jobs = require('../db/Jobs');
 
 module.exports = {
   create : async (req, res) => {
-    res.send('create a job')
+    const {position, company, jobLocation, description} = req.body;
+    if (!position || !company || !jobLocation || !description) {
+      throw Error('Please provide all values')
+    }
+    req.body.createdBy = req.user.userId;
+    const job = await Jobs.create(req.body)
+    res.status(201).json({job})
   },
 
    getAll : async (req, res) => {
