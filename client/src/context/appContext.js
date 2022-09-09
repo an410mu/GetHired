@@ -38,6 +38,8 @@ const toggle_sidebar = 'TOGGLE_SIDEBAR';
 const logout = 'LOGOUT';
 const handleInput = 'HANDLE_INPUT';
 const clear = 'CLEAR';
+const createJob = 'CREATE_JOB';
+const createJobSuccess = 'CREATE_JOB_SUCCESS';
 
 
 //reduer hooks
@@ -131,6 +133,7 @@ const reducer = (state, action) => {
         position: '',
         company: '',
         jobLocation: '',
+        description:'',
         jobType: 'full-time',
         status: 'pending',
       }
@@ -138,6 +141,20 @@ const reducer = (state, action) => {
       return {
         ...state,
         ...initialState,
+      }
+    }
+
+    if (action.type === createJob) {
+      return { ...state, isLoading: true }
+    }
+
+    if (action.type === createJobSuccess) {
+      return {
+        ...state,
+        isLoading: false,
+        showAlert: true,
+        alertType: 'success',
+        alertText: 'New Job Created!',
       }
     }
 
@@ -207,8 +224,28 @@ const AppProvider = ({children}) => {
     dispatch({ type: clear })
   }
 
+  const createJobs = async () => {
+    dispatch({ type: createJob })
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }};
+    const { position, company, jobLocation, description, jobType, status } = state
+    await axios.post('/api/jobs', {
+      position,
+      company,
+      jobLocation,
+      description,
+      jobType,
+      status,
+    }, config)
+    dispatch({ type: createJobSuccess })
+    dispatch({ type: clear })
+
+    clearAlert()
+  }
+
+
   return (
-    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser, handleChange, clearValues}}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser, handleChange, clearValues, createJobs}}>{children}</AppContext.Provider>
   )
 }
 
