@@ -52,7 +52,7 @@ const Wrapper = styled.section`
       column-gap: 1rem;
     }
     .btn-container {
-      margin-top: 0;
+      margin-top: 5px;
     }
   }
   @media (min-width: 1120px) {

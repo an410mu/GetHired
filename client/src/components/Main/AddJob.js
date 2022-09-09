@@ -54,6 +54,16 @@ const AddJob = () => {
           <input type='text' value={jobLocation} name='jobLocation' onChange={changeHandler} className='form-input'/>
           <label htmlFor='description' className='form-label'>description</label>
           <input type='text' value={description} name='description' onChange={changeHandler} className='form-input'/>
+          <label htmlFor='status' className='form-label'>status</label>
+          <select className='form-select' name='status' value={status} onChange={changeHandler}>{
+            statusOptions.map((item, index) => {
+              return <option key={index} value={item} >{item}</option>
+            })
+          }</select>
+          <label htmlFor='jobType' className='form-label'>jobType</label>
+          <select className='form-select' name='jobType' value={jobType} onChange={changeHandler}>{jobTypeOptions.map( (item, index) => {
+            return <option key={index} value={item}>{item}</option>
+          })}</select>
 
         </div>
         <div className='btn-container'>
