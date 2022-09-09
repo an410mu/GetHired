@@ -12,7 +12,8 @@ module.exports = {
   },
 
    getAll : async (req, res) => {
-    res.send('get all jobs')
+    const jobs = await Jobs.find( {createdBy:req.user.userId})
+    res.status(200).json({jobs, count:jobs.length, numberOfpages:1})
   },
 
    update : async (req, res) => {

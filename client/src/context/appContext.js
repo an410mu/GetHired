@@ -1,4 +1,4 @@
-import React, {useReducer, useContext} from 'react';
+import React, {useReducer, useContext, useEffect} from 'react';
 import axios from 'axios';
 
 const token = localStorage.getItem('token')
@@ -23,6 +23,13 @@ const initialState = {
   jobType: 'full-time',
   statusOptions: ['interview', 'declined', 'pending'],
   status: 'pending',
+  //for jobs
+  jobs: [],
+  totalJobs: 0,
+  numOfPages: 1,
+  page: 1,
+  stats: {},
+
 }
 
 
@@ -40,6 +47,8 @@ const handleInput = 'HANDLE_INPUT';
 const clear = 'CLEAR';
 const createJob = 'CREATE_JOB';
 const createJobSuccess = 'CREATE_JOB_SUCCESS';
+const getJob = 'GET_JOB';
+const getJobSuccess = 'GET_JOB_SUCCESS';
 
 
 //reduer hooks
@@ -158,6 +167,19 @@ const reducer = (state, action) => {
       }
     }
 
+    if (action.type === getJob) {
+      return { ...state, isLoading: true, showAlert: false }
+    }
+    if (action.type === getJobSuccess) {
+      return {
+        ...state,
+        isLoading: false,
+        jobs: action.playload.jobs,
+        totalJobs: action.playload.totalJobs,
+        numOfPages: action.playload.numOfPages,
+      }
+    }
+
 
   //add action above
   throw new Error(`no such action ${action.type}`)
@@ -243,9 +265,37 @@ const AppProvider = ({children}) => {
     clearAlert()
   }
 
+  const getJobs = async () => {
+    const { page, search, searchStatus, searchType, sort } = state
+
+    //let url = `/jobs`
+    const config = {
+      headers: { Authorization: `Bearer ${token}` }};
+
+    dispatch({ type: getJob })
+    try {
+      const { data } = await axios.get('/api/jobs', config)
+      const { jobs, totalJobs, numOfPages } = data
+      dispatch({
+        type: getJobSuccess,
+        playload: {
+          jobs,
+          totalJobs,
+          numOfPages,
+        },
+      })
+    } catch (error) {
+      logoutUser()
+    }
+    clearAlert()
+  }
+
+  useEffect( ()=> {
+    getJobs()
+  }, []);
 
   return (
-    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser, handleChange, clearValues, createJobs}}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser, handleChange, clearValues, createJobs, getJobs}}>{children}</AppContext.Provider>
   )
 }
 
