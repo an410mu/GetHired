@@ -9,8 +9,8 @@ import { FaWpforms } from 'react-icons/fa'
 import { ImProfile } from 'react-icons/im'
 
 const links = [
-  { id: 1, text: 'stats', path: '/overview', icon: <IoBarChartSharp /> },
-  { id: 2, text: 'all jobs', path: '/overview/all-jobs', icon: <MdQueryStats /> },
+  { id: 1, text: 'stats', path: '/overview/stats', icon: <IoBarChartSharp /> },
+  { id: 2, text: 'all jobs', path: '/overview', icon: <MdQueryStats /> },
   { id: 3, text: 'add job', path: '/overview/add-job', icon: <FaWpforms /> },
   { id: 4, text: 'profile', path: 'profile', icon: <ImProfile /> },
 ]

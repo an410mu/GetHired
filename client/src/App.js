@@ -31,8 +31,8 @@ function App() {
 
           }
         >
-          <Route index element={<Stats />} />
-          <Route path='/overview/all-jobs' element={<AllJobs />} />
+          <Route index element={<AllJobs />} />
+          <Route path='/overview/stats' element={<Stats />} />
           <Route path='/overview/add-job' element={<AddJob />} />
         </Route>
       <Route path='*' element={<div>Error</div>} />
