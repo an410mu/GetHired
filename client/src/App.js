@@ -7,6 +7,7 @@ import Auth from './components/Auth.js';
 import ProtectedRoute from './components/ProtectedRoute.js';
 import AllJobs from './components/main/AllJobs.js'
 import AddJob from './components/main/AddJob.js'
+import EditJob from './components/main/EditJob.js'
 import SharedLayout from './components/main/SharedLayout.js'
 import Stats from './components/main/Stats.js'
 import styled from 'styled-components';
@@ -27,13 +28,12 @@ function App() {
           element={
             <ProtectedRoute>
               <SharedLayout />
-            </ProtectedRoute>
-
-          }
+            </ProtectedRoute>}
         >
           <Route index element={<AllJobs />} />
           <Route path='/overview/stats' element={<Stats />} />
           <Route path='/overview/add-job' element={<AddJob />} />
+          <Route path='/overview/edit-job' element={<EditJob />} />
         </Route>
       <Route path='*' element={<div>Error</div>} />
     </Routes>

@@ -48,6 +48,7 @@ const createJob = 'CREATE_JOB';
 const createJobSuccess = 'CREATE_JOB_SUCCESS';
 const getJob = 'GET_JOB';
 const getJobSuccess = 'GET_JOB_SUCCESS';
+const edit = 'EDIT_JOB'
 
 
 //reduer hooks
@@ -179,6 +180,21 @@ const reducer = (state, action) => {
       }
     }
 
+    if (action.type === edit) {
+      const job = state.jobs.find((job) => job._id === action.playload.id)
+      const { _id, position, company, jobLocation, jobType, status, description} = job
+      return {
+        ...state,
+        isEditing: true,
+        editJobId: _id,
+        position,
+        description,
+        company,
+        jobLocation,
+        jobType,
+        status,
+      }
+    }
 
   //add action above
   throw new Error(`no such action ${action.type}`)
@@ -284,17 +300,29 @@ const AppProvider = ({children}) => {
         },
       })
     } catch (error) {
-      logoutUser()
+      //logoutUser()
     }
     clearAlert()
   }
 
-  useEffect( ()=> {
+  const setEdit = id => {
+    dispatch({type:edit, playload:{id}})
+  }
+
+  const editJob = () => {
+    console.log("edit job")
+  }
+
+  const deleteJob = (id) => {
+    console.log("delete job", id)
+  }
+
+  useEffect(() => {
     getJobs()
-  }, []);
+  }, [jobs])
 
   return (
-    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser, handleChange, clearValues, createJobs, getJobs}}>{children}</AppContext.Provider>
+    <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser, handleChange, clearValues, createJobs, getJobs,editJob,deleteJob,setEdit }}>{children}</AppContext.Provider>
   )
 }
 

@@ -12,10 +12,7 @@ const AllJobs = () => {
     page,
     totalJobs,
   } = useAppContext()
-  useEffect(() => {
-    getJobs()
-    // eslint-disable-next-line
-  }, [])
+
 
     if (jobs.length === 0 ) {
       return (
