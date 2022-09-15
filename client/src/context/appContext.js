@@ -319,7 +319,7 @@ const AppProvider = ({children}) => {
 
   useEffect(() => {
     getJobs()
-  }, [jobs])
+  }, [])
 
   return (
     <AppContext.Provider value={{...state, displayAlert, setupUser, toggleSidebar, logoutUser, handleChange, clearValues, createJobs, getJobs,editJob,deleteJob,setEdit }}>{children}</AppContext.Provider>

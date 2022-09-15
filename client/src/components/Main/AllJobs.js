@@ -24,7 +24,6 @@ const AllJobs = () => {
     } else {
         return (
           <Wrapper>
-            <div>AllJobs</div>
             <Search />
             <h5>{totalJobs} job{jobs.length > 1 && 's'} found</h5>
             <div className='jobs'>

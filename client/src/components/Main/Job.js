@@ -52,6 +52,7 @@ const Job = ({
             <NavLink
               to='/overview/edit-job'
               className='btn edit-btn'
+              onClick={()=>{setEdit(_id)}}
             >
               Edit
             </NavLink >
