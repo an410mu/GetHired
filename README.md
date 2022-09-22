@@ -20,6 +20,10 @@ Upon completion of this project, the application will provide a tracking system 
 - **Statistics:** Statistics page will show how many jobs that users have applied in monthly and weekly horizion. It also shows to users how many are interviewed, pending, or declined. 
 
 
+https://user-images.githubusercontent.com/23014355/191853985-e17aa634-096f-46b1-a2f0-ed3c38432a27.mp4
+
+
+
 
 # Tech Stack
 
